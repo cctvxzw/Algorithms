@@ -1,0 +1,8 @@
+﻿  源.cpp
+c:\users\cctvxzw\desktop\juzhen\juzhen\源.cpp(5): warning C4005: “max”: 宏重定义
+  c:\program files (x86)\windows kits\10\include\10.0.16299.0\shared\minwindef.h(193): note: 参见“max”的前一个定义
+c:\users\cctvxzw\desktop\juzhen\juzhen\源.cpp(6): warning C4005: “min”: 宏重定义
+  c:\program files (x86)\windows kits\10\include\10.0.16299.0\shared\minwindef.h(197): note: 参见“min”的前一个定义
+c:\users\cctvxzw\desktop\juzhen\juzhen\源.cpp(149): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
+c:\users\cctvxzw\desktop\juzhen\juzhen\源.cpp(267): warning C4244: “参数”: 从“time_t”转换到“unsigned int”，可能丢失数据
+  JuZhen.vcxproj -> C:\Users\cctvxzw\Desktop\JuZhen\Debug\JuZhen.exe
