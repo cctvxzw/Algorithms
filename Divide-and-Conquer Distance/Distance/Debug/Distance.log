@@ -1,0 +1,9 @@
+﻿  源.cpp
+c:\users\cctvxzw\source\repos\distance\distance\源.cpp(5): warning C4005: “max”: 宏重定义
+  c:\program files (x86)\windows kits\10\include\10.0.16299.0\shared\minwindef.h(193): note: 参见“max”的前一个定义
+c:\users\cctvxzw\source\repos\distance\distance\源.cpp(6): warning C4005: “min”: 宏重定义
+  c:\program files (x86)\windows kits\10\include\10.0.16299.0\shared\minwindef.h(197): note: 参见“min”的前一个定义
+c:\users\cctvxzw\source\repos\distance\distance\源.cpp(19): warning C4838: 从“int”转换到“SHORT”需要收缩转换
+c:\users\cctvxzw\source\repos\distance\distance\源.cpp(226): warning C4101: “Y”: 未引用的局部变量
+c:\users\cctvxzw\source\repos\distance\distance\源.cpp(271): warning C4244: “参数”: 从“time_t”转换到“unsigned int”，可能丢失数据
+  Distance.vcxproj -> C:\Users\cctvxzw\source\repos\Distance\Debug\Distance.exe
