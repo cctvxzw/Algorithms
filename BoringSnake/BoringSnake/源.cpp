@@ -3,6 +3,9 @@
 #include<conio.h>
 #include <time.h>
 
+int speedFlag=0;
+int pace = 0;			//用来标志蛇处于何种状态
+
 int Random(int start, int end) {
 	int dis = end - start;
 	return rand() % dis + start;
@@ -94,6 +97,11 @@ int moveonSnake1(Snakehead* head,int *n) {
 		*(n + head->x + head->y * 20 + 1) = 0;
 		return 4;
 	}
+	else if (*(n + head->x + head->y * 20 + 1) == 5)
+	{
+		*(n + head->x + head->y * 20 + 1) = 0;
+		return 5;
+	}
 	else {
 		/*把尾巴还原*/
 		do{
@@ -139,6 +147,11 @@ int moveonSnake0(Snakehead* head,int *n) {
 		*(n + head->x + head->y * 20 - 20) = 0;
 		return 4;
 	}
+	else if (*(n + head->x + head->y * 20 - 20) == 5)
+	{
+		*(n + head->x + head->y * 20 - 20) = 0;
+		return 5;
+	}
 	else {
 		/*把尾巴还原*/
 		do {
@@ -183,6 +196,11 @@ int moveonSnake2(Snakehead* head,int *n) {
 	{
 		*(n + head->x + head->y * 20 + 20) = 0;
 		return 4;
+	}
+	else if (*(n + head->x + head->y * 20 + 20) == 5)
+	{
+		*(n + head->x + head->y * 20 + 20) = 0;
+		return 5;
 	}
 	else {
 		/*把尾巴还原*/
@@ -230,6 +248,11 @@ int moveonSnake3(Snakehead* head,int *n) {
 	else if (*(n + head->x + head->y * 20 - 1) == 1)
 	{
 		return 3;
+	}
+	else if (*(n + head->x + head->y * 20 - 1) == 5)
+	{
+		*(n + head->x + head->y * 20 - 1) = 0;
+		return 5;
 	}
 	else {
 		/*把尾巴还原*/
@@ -289,7 +312,14 @@ Snakehead* growSnake(Snakehead *head)
 	point2->length = head->length + 1;
 	head = point2;
 
+	if (pace > 0)
+		pace--;
+
 	return head;
+}
+
+void speedUp() {
+	speedFlag = 1;
 }
 
 Snakehead* moveSnake(Snakehead* head,int *a) {
@@ -352,8 +382,19 @@ Snakehead* moveSnake(Snakehead* head,int *a) {
 		{
 			x = Random(1, 19);
 			y = Random(1, 19);
-			*(a + x + y * 20) = 4;
-		} while (*(a + x + y * 20) != 4);
+		} while (*(a + x + y * 20) != 0 );
+		*(a + x + y * 20) = 4;
+	}
+	else if (flag == 5)
+	{
+		speedUp();
+		int m, n;
+		do
+		{
+			m = Random(1, 19);
+			n = Random(1, 19);
+		} while (*(a + m + n * 20) != 0);
+		*(a + m + n * 20) = 5;
 	}
 		
 
@@ -419,20 +460,37 @@ void drawMap(int *a,int n) {
 			goto_xy(x, y);
 			printf("<>");
 		}
+		else if (*(a + i) == 5) {
+			y = (int)(i / n);
+			x = (i % n) * 2;
+			goto_xy(x, y);
+			printf("[]");
+		}
 	}
 }
 
-void gameOn(int *a, int n)
+void gameOn(int *a, int n,int speed)
 {
+	int statSpeed = speed;
 	Snakehead *snake;
 	snake = genSnake();
 	drawMap(drawSnake(a, snake, n), n);
 	srand((unsigned)time(NULL));
 	while (1)
 	{
-		Sleep(200);
+		Sleep(speed);
 		snake = moveSnake(snake, a);
 		drawMap(drawSnake(a, snake, n), n);
+		if (speedFlag == 0 && pace == 0) {
+			speed = statSpeed;
+		}
+		else if (speedFlag == 1) {
+			speed = speed / 2;
+			pace = 3;
+			speedFlag = 0;
+		}
+		/*goto_xy(2, 22);
+		printf("speed：%d",speed);*/
 	}
 }
 
@@ -440,7 +498,7 @@ int main() {
 	int a[20][20] = {2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
 					 3,0,0,0,0,0,0,0,0,4,0,0,0,0,0,0,0,0,0,3,
 					 3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,
-					 3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,
+					 3,0,0,0,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,
 					 3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,
 					 3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,
 					 3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,
@@ -457,7 +515,7 @@ int main() {
 					 3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,
 					 3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,
 					 2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2 };
-	gameOn(&a[0][0], 20);
+	gameOn(&a[0][0], 20, 100);
 }
 
 
